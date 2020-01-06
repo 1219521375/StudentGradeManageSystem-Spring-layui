@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Layui HTML</title>
+    <link rel="stylesheet" href="../layui/css/layui.css">
+</head>
+<body>
+<button type="button" onclick="gotoit()">Click Me!</button>
+
+</body>
+<script src="../layui/layui.js"></script>
+<script>
+
+function gotoit(){
+    window.location = "http://localhost:8080/index2.html"
+}
+    layui.use(['layer', 'form'], function(){
+        var layer = layui.layer
+            ,form = layui.form;
+
+        layer.msg('Hello LayUI');
+    });
+</script>
+</html>
