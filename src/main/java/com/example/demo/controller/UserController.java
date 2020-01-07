@@ -29,7 +29,7 @@ public class UserController {
 
     //标识请求地址
     @RequestMapping("/login")
-    public ResultObject<Teacher> getTeacher(User user, HttpServletRequest request) {
+    public ResultObject<Teacher> getTeacher( HttpServletRequest request,User user) {
         //查询用户列表
         int type = Integer.parseInt(user.getType());
         Teacher teacher = teacherService.GetTeacherByPrimaryKey(user.getUserName());
@@ -41,6 +41,7 @@ public class UserController {
             rs.setMsg("没有该用户！");
         }else{
             if(type == 1){ //教师
+                System.out.println(teacher.getTpassword() + " " + user.getPassword());
                 if(teacher.getTpassword().equals(user.getPassword())){
                     //状态码
                     rs.setCode(Constant.SUCCESS_RETUEN_CODE);
@@ -83,7 +84,7 @@ public class UserController {
     //学生登录请求
     //标识请求地址
     @RequestMapping("/studentLogin")
-    public ResultObject<Student> studentLogin(User user, HttpServletRequest request) {
+    public ResultObject<Student> studentLogin(HttpServletRequest request,User user) {
         //查询用户列表
         System.out.println(user.getType() + user.getUserName() + "   " + user.getPassword());
         Student student=studentService.GetStudentByPrimaryKey(user.getUserName());

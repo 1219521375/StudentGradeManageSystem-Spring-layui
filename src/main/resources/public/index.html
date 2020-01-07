@@ -75,7 +75,7 @@
 
 						                       location.href="/teacher-index.html";
 						                    } else {
-						                        layer.msg('用户名密码错误', {
+						                        layer.msg(result.msg, {
 						                            icon: 5
 						                        });
 						                    }
@@ -106,7 +106,7 @@
 					                    	if (result.code == "0") {
 							                       location.href="/student-index.html";
 							                    } else {
-							                        layer.msg('用户名密码错误2', {
+							                        layer.msg(result.msg, {
 							                            icon: 5
 							                        });
 							                    }

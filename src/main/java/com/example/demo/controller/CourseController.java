@@ -40,6 +40,70 @@ public class CourseController {
     @Autowired
     private TeaMyStuService teaMyStuService;
 
+    @Autowired
+    private StudentService studentService;
+
+    @Autowired
+    private TeacherService teacherService;
+
+    @RequestMapping("/updateThisTea")
+    public ResultObject<List<Teacher>> updateThisTea(HttpServletRequest request,Teacher teacher){
+        int u = teacherService.UpdateTeacher(teacher);
+        ResultObject<List<Teacher>> rs = new ResultObject<List<Teacher>>();
+        List<Teacher> list = new ArrayList<Teacher>();
+        list.add(teacher);
+        rs.setCode(Constant.SUCCESS_RETUEN_CODE);
+        rs.setMsg("查询成功");
+        rs.setData(list);
+        System.out.println(teacher.getTname());
+        rs.setCount(Long.parseLong(list.size() + ""));
+        return rs;
+    }
+
+    @RequestMapping("/getThisTeacher")
+    public ResultObject<List<Teacher>> getThisTeacher(HttpServletRequest request){
+        Teacher t = (Teacher)request.getSession().getAttribute("teacher");
+        Teacher teacher = teacherService.GetTeacherByPrimaryKey(t.getTno());
+        ResultObject<List<Teacher>> rs = new ResultObject<List<Teacher>>();
+        List<Teacher> list = new ArrayList<Teacher>();
+        list.add(teacher);
+        rs.setCode(Constant.SUCCESS_RETUEN_CODE);
+        rs.setMsg("查询成功");
+        rs.setData(list);
+        System.out.println(list.get(0).getTname());
+        rs.setCount(Long.parseLong(list.size() + ""));
+        return rs;
+    }
+
+    @RequestMapping("/updateThisStu")
+    public ResultObject<List<Student>> updateThisStu(HttpServletRequest request,Student student){
+        int u = studentService.UpdateStudent(student);
+        ResultObject<List<Student>> rs = new ResultObject<List<Student>>();
+        List<Student> list = new ArrayList<Student>();
+        list.add(student);
+        rs.setCode(Constant.SUCCESS_RETUEN_CODE);
+        rs.setMsg("查询成功");
+        rs.setData(list);
+        System.out.println(student.getSname());
+        rs.setCount(Long.parseLong(list.size() + ""));
+        return rs;
+    }
+
+    @RequestMapping("/getThisStudent")
+    public ResultObject<List<Student>> getThisStudent(HttpServletRequest request){
+        Student s = (Student)request.getSession().getAttribute("student");
+        Student student = studentService.GetStudentByPrimaryKey(s.getSno());
+        ResultObject<List<Student>> rs = new ResultObject<List<Student>>();
+        List<Student> list = new ArrayList<Student>();
+        list.add(student);
+        rs.setCode(Constant.SUCCESS_RETUEN_CODE);
+        rs.setMsg("查询成功");
+        rs.setData(list);
+        System.out.println(list.get(0).getSname());
+        rs.setCount(Long.parseLong(list.size() + ""));
+        return rs;
+    }
+
     @RequestMapping("/getTeaCourse")
     public ResultObject<List<AllTsc>> getTeaCourse(HttpServletRequest request){
         Teacher teacher = (Teacher) request.getSession().getAttribute("teacher");

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport"
+		  content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<title>教师录入成绩系统</title>
+	<link rel="stylesheet" type="text/css"
+		  href="assets/admin/layui/css/layui.css" />
+	<link rel="stylesheet" type="text/css" href="assets/admin/css/admin.css" />
+</head>
+
+<body>
+<div class="page-content-wrap" id="studentSearch">
+	<h5 style="text-align:center;font-size: 20px;line-height: 25px;color:#666">我的信息-学生</h5>
+	<hr>
+
+	<div class="layui-form-item">
+
+		<table class="layui-table"  id="test3" lay-filter="test3">
+
+		</table>
+	</div>
+	<hr></hr>
+	<h5 style="text-align: center;">@2020.NUC</h5>
+</div>
+
+<script type="text/html" id="toolbarDemo">
+	<div class="layui-btn-container">
+		<button class="layui-btn layui-btn-sm" lay-event="update">更新</button>
+	</div>
+</script>
+
+<script type="text/html" id="barDemo">
+	<a class="layui-btn layui-btn-xs" lay-event="edit">更新</a>
+</script>
+<script src="assets/admin/layui/layui.all.js" type="text/javascript"
+		charset="utf-8"></script>
+<script src="assets/js/aJaxUtil.js"></script>
+<script src="assets/js/jquery-3.3.1.min.js"></script>
+<script>
+layui.use('table', function(){
+  var table = layui.table;
+
+  table.render({
+    elem: '#test3',
+    url: '/course/getThisStudent',
+      title: '提示'
+      ,layEvent: 'LAYTABLE_TIPS'
+      ,icon: 'layui-icon-tips'
+    ,title: '用户数据表'
+    ,cols: [[
+		{field:'sno', title:'学号',width:110, sort: true}
+		,{field:'spassword',title:'密码', width:130, edit: 'text'}
+		,{field:'sname',title:'姓名', Width: 100}
+		,{field:'ssex',title:'性别', width:80}
+		,{field:'sdept',title:'专业', minWidth: 110}
+		,{field:'sclass',title:'班级',minWidth: 100}
+		,{field:'splace',title:'籍贯', edit: 'text'}
+		,{field:'stel', title:'电话',edit: 'text',minWidth: 100}
+		,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:80}
+    ]]
+  });
+
+  //头工具栏事件
+  table.on('toolbar(test3)', function(obj){
+    var checkStatus = table.checkStatus(obj.config.id);
+    switch(obj.event){
+
+      case 'update':
+          //执行提交重载
+      table.reload('test3',{
+      		where:{
+      		 	key: {
+            		//id: "1"
+          		}
+      		}
+      });
+      break;
+
+      //自定义头工具栏右侧图标 - 提示
+      case 'LAYTABLE_TIPS':
+        layer.alert('这是工具栏右侧自定义的一个图标按钮');
+      break;
+    };
+  });
+
+	//监听单元格编辑
+  table.on('edit(test3)', function(obj){
+    var value = obj.value //得到修改后的值
+    ,data = obj.data //得到所在行所有键值
+    ,field = obj.field; //得到字段
+    layer.msg('[ID: '+ data.id +'] ' + field + ' 字段更改为：'+ value);
+  });
+  //监听行工具事件
+  table.on('tool(test3)', function(obj){
+    var data = obj.data;
+    var str = data.cname + " 是否选择该学生？"
+    //console.log(obj)
+    if(obj.event === 'edit'){
+      	$.ajax({
+		        //几个参数需要注意一下
+		        type: "POST",//方法类型
+		        dataType: "json",//预期服务器返回的数据类型
+		        url: "/course/updateThisStu",//url
+		        data: data,
+		        success: function (result) {
+		        	if (result.code == "0") {
+		        		obj.del();
+		        		layer.close(index);
+		        		layer.msg('更新个人信息成功');
+		        		layui.table.reload('test3',{
+      						where:{
+      		 					key: {
+            					//id: "1"
+          						}
+      						}
+     					 });
+
+		                }else{
+		                	layer.msg('更新个人信息失败', {
+		                        icon: 5
+		                    });
+		                }
+		        },
+		        error : function() {
+		        	layer.msg('服务器错误66', {
+		                icon: 5
+		            });
+		        }
+		});
+
+    }
+    table.reload('test3',{
+      	where:{
+      		key: {
+        	//id: "1"
+        	}
+      	}
+     });
+  });
+});
+</script>
+
+
+</body>
+
+</html>

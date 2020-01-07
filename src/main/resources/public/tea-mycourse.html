@@ -31,7 +31,7 @@
 
 <script type="text/html" id="toolbarDemo">
 	<div class="layui-btn-container">
-		<button class="layui-btn layui-btn-sm" lay-event="isAll">刷新</button>
+		<button class="layui-btn layui-btn-sm" lay-event="reload">刷新</button>
 	</div>
 </script>
 
@@ -62,10 +62,9 @@ layui.use('table', function(){
       ,{field:'cname', title:'课程名'}
       ,{field:'ccre', title:'学分'}
       ,{field:'chour', title:'学时'}
-      ,{field:'cmaxnum', title:'最大人数'}
-      ,{field:'cnumber', title:'当前选择人数',sort: true}
+      ,{field:'cterm', title:'授课学期',sort: true}
       ,{field:'cstate', title:'当前状态',sort: true}
-      ,{fixed: 'right', title:'操作', toolbar: '#barDemo'}
+
     ]]
   });
 
@@ -74,8 +73,15 @@ layui.use('table', function(){
     var checkStatus = table.checkStatus(obj.config.id);
     switch(obj.event){
 
-      case 'isAll':
-        layer.msg(checkStatus.isAll ? '全选': '未全选');
+       case 'reload':
+          //执行重载
+      table.reload('test',{
+      		where:{
+      		 	key: {
+            		//id: "1"
+          		}
+      		}
+      });
       break;
 
       //自定义头工具栏右侧图标 - 提示
